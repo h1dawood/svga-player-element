@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Ultimate &lt;svga-player&gt; Guide</title>
+
+  <!-- SEO and Meta Information -->
+  <meta name="description" content="A complete, interactive dark-mode guide to using the &lt;svga-player&gt; custom HTML element with full, color-coded examples.">
+  <meta name="keywords" content="SVGA, svga-player, custom element, web components, tutorial, documentation, dark mode, syntax highlighting">
+
+  <!-- Google Fonts for a polished look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Prism.js CSS for Syntax Highlighting (Okaidia Theme) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+  <style>
+    /* --- THEME & STYLING --- */
+    :root.dark {
+      --background: #000;
+      --gray-a1: #16171aeb;
+      --gray-a2: #18191ce0;
+      --gray-a3: #b0c7d925;
+      --gray-a4: #caecff33;
+      --gray-a5: #d2f3ff3d;
+      --gray-a6: #d7eff847;
+      --gray-a7: #e2f5fe4d;
+      --gray-a8: #d8eaf161;
+      --gray-a9: #fdfeffa6;
+      --gray-a10: #fdfdfded;
+      --gray-1: #141517;
+      --gray-2: #191b1e;
+      --gray-3: #212629;
+      --gray-4: #293034;
+      --gray-5: #333b3e;
+      --gray-6: #3b4345;
+      --gray-7: #434a4d;
+      --gray-8: #52595b;
+      --gray-9: #a1a4a5;
+      --gray-10: #f0f0f0;
+
+      --bg-color: var(--background);
+      --card-bg: var(--gray-1);
+      --primary-color: #00aaff; /* Retained for accents, aligns with blue-tinted grays like --gray-a4 */
+      --text-color: var(--gray-a9);
+      --header-color: var(--gray-a10);
+      --border-color: var(--gray-3);
+      --success-color: #33ff99; /* Retained for success feedback */
+      --accent-bg: var(--gray-2);
+      --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* --- GENERAL --- */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      margin: 0;
+      padding: 3rem 1rem; /* Enhanced padding for better spacing */
+    }
+    
+    .container {
+      max-width: 1000px; /* Slightly wider for better readability */
+      margin: 0 auto;
+    }
+
+    /* --- TYPOGRAPHY --- */
+    h1, h2, h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--header-color);
+      border-bottom: 2px solid var(--gray-a4); /* Using alpha blue-gray for subtle accent */
+      padding-bottom: 12px;
+      margin-top: 3.5rem;
+    }
+
+    h1 { 
+      font-size: 3.2rem; 
+      text-align: center; 
+      border: none;
+      background: linear-gradient(90deg, var(--primary-color), var(--gray-a8)); /* Enhanced gradient with theme color */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    h2 { font-size: 2.4rem; }
+    h3 { font-size: 1.8rem; border-bottom-style: dashed; }
+    
+    p { margin-bottom: 1.2rem; }
+    a { color: var(--primary-color); text-decoration: none; }
+    a:hover { text-decoration: underline; color: var(--gray-a8); }
+    strong { color: var(--header-color); font-weight: 500; }
+    
+    .subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+        color: var(--gray-a7);
+    }
+
+    /* --- CODE BLOCKS & COPY BUTTON --- */
+    /* The Prism.js theme handles most code styling. We just add structure. */
+    pre[class*="language-"] {
+      position: relative;
+      border: 1px solid var(--gray-a3);
+      border-radius: 12px; /* Softer corners */
+      padding: 1.8rem;
+      margin: 1.8rem 0;
+      font-size: 0.95em;
+      background-color: var(--gray-1); /* Enhanced with theme bg for consistency */
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    
+    /* For inline code */
+    :not(pre) > code[class*="language-"] {
+        padding: .2em .4em;
+        border-radius: .3em;
+        white-space: normal;
+        background-color: var(--gray-a2);
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: var(--gray-4);
+      color: var(--gray-a9);
+      border: 1px solid var(--gray-a3);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      transition: all 0.3s ease-in-out;
+    }
+
+    pre:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .copy-btn:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+        transform: scale(1.05); /* Subtle hover enhancement */
+    }
+
+    /* --- LAYOUT & CARDS --- */
+    .section {
+      background-color: var(--card-bg);
+      border-radius: 12px; /* Softer corners */
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 35px var(--shadow-color); /* Deeper shadow for depth */
+      border: 1px solid var(--gray-a2);
+    }
+    
+    .demo-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 25px;
+      margin-top: 2.5rem;
+      padding: 2rem;
+      background-color: var(--accent-bg);
+      border-radius: 12px;
+      border: 1px solid var(--gray-a3);
+    }
+    
+    svga-player {
+      border: 2px solid var(--gray-a4); /* Blue-tinted border for accent */
+      border-radius: 12px;
+      background: transparent;
+      box-shadow: 0 6px 20px var(--shadow-color); /* Enhanced shadow */
+      transition: transform 0.3s ease; /* Add hover effect */
+    }
+    
+    svga-player:hover {
+      transform: scale(1.05);
+    }
+    
+    /* --- INTERACTIVE ELEMENTS --- */
+    .controls {
+      display: flex;
+      flex-direction: row; /* Changed to row for better UX */
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .control-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .control-btn:hover {
+      background-color: var(--gray-a8); /* Tie to theme */
+      transform: translateY(-3px);
+    }
+
+    /* --- TABLE FOR API --- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background-color: var(--gray-1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-a3);
+    }
+
+    th {
+      background-color: var(--gray-3);
+      color: var(--gray-a10);
+    }
+
+    td {
+      color: var(--gray-a9);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>The Ultimate &lt;svga-player&gt; Guide</h1>
+    <p class="subtitle">Your all-in-one, copy-paste-ready solution for awesome SVGA animations.</p>
+
+    <!-- INTRODUCTION -->
+    <div class="section">
+      <h2>What is This?</h2>
+      <p>This is a custom HTML element, <code>&lt;svga-player&gt;</code>, that makes adding high-performance <a href="http://svga.io/" target="_blank">SVGA animations</a> to your website incredibly simple. You can use it just like an <code>&lt;img&gt;</code> tag, but for complex animations.</p>
+      <p><strong>This entire page is a self-contained, working example.</strong> Just save it as an <code>.html</code> file!</p>
+    </div>
+
+    <!-- QUICK START -->
+    <div class="section">
+      <h2>Quick Start in 3 Steps</h2>
+      
+      <h3>Step 1: Add the SVGA Library</h3>
+      <p>Paste this script into your HTML file, right before the closing <code>&lt;/body&gt;</code> tag.</p>
+<pre><code class="language-html">&lt;!-- SVGA Web Player Library (Required) --&gt;
+&lt;script src="https://unpkg.com/svgaplayerweb@2.3.0/build/svga.min.js"&gt;&lt;/script&gt;</code></pre>
+      
+      <h3>Step 2: Add the Custom Element Code</h3>
+      <p>Paste the <strong>complete code below</strong> into a <code>&lt;script&gt;</code> tag, right after the library from Step 1. This is the "engine" for our new HTML tag.</p>
+<pre><code class="language-html">&lt;!-- The &lt;svga-player&gt; Custom Element Code --&gt;
+&lt;script&gt;
+  /**
+   * SVGAPlayerElement: A Custom HTML Element for SVGA Animations.
+   * This component wraps the svgaplayerweb library into a simple, reusable HTML tag.
+   */
+  class SVGAPlayerElement extends HTMLElement {
+    constructor() {
+      super();
+      this.player = null;
+      this.parser = null;
+      this.canvas = null;
+    }
+    
+    connectedCallback() {
+      this.createCanvas();
+      this.initializeSVGA();
+      this.observeAttributes();
+    }
+    
+    createCanvas() {
+      this.canvas = document.createElement('canvas');
+      this.canvas.width = this.getAttribute('width') || 200;
+      this.canvas.height = this.getAttribute('height') || 200;
+      this.canvas.style.display = 'block';
+      this.canvas.style.background = 'transparent';
+      this.appendChild(this.canvas);
+    }
+    
+    initializeSVGA() {
+      if (!window.SVGA) {
+        console.error('SVGA library is not loaded. Make sure the script is included.');
+        return;
+      }
+      
+      try {
+        this.player = new SVGA.Player(this.canvas);
+        this.parser = new SVGA.Parser(this.canvas);
+        
+        const src = this.getAttribute('src');
+        if (src) {
+          this.loadSVGA(src);
+        }
+      } catch (error) {
+        console.error('Error initializing SVGA Player:', error);
+      }
+    }
+
+    observeAttributes() {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes') {
+            this.handleAttributeChange(mutation.attributeName);
+          }
+        });
+      });
+      observer.observe(this, { attributes: true });
+    }
+    
+    loadSVGA(url) {
+      if (!this.parser || !this.player) return;
+      
+      this.player.clear();
+      
+      this.parser.load(url, 
+        (videoItem) => {
+          this.player.setVideoItem(videoItem);
+          const loops = this.getAttribute('loops');
+          this.player.loops = loops !== null ? (parseInt(loops, 10) || 0) : 1;
+          if (this.hasAttribute('autoplay')) {
+            this.player.startAnimation();
+          }
+        }, 
+        (error) => {
+          console.error(`Error loading SVGA file: ${url}`, error);
+        }
+      );
+    }
+    
+    handleAttributeChange(attributeName) {
+      const value = this.getAttribute(attributeName);
+      switch (attributeName) {
+        case 'src':
+          if (value) this.loadSVGA(value);
+          break;
+        case 'width':
+          this.canvas.width = value || 200;
+          break;
+        case 'height':
+          this.canvas.height = value || 200;
+          break;
+        case 'loops':
+          if (this.player) this.player.loops = value !== null ? (parseInt(value, 10) || 0) : 1;
+          break;
+      }
+    }
+    
+    play() { if (this.player) this.player.startAnimation(); }
+    pause() { if (this.player) this.player.pauseAnimation(); }
+    stop() { if (this.player) this.player.stopAnimation(); }
+    
+    static get observedAttributes() {
+      return ['src', 'width', 'height', 'loops', 'autoplay'];
+    }
+  }
+  
+  // Register the custom element, making &lt;svga-player&gt; usable in HTML.
+  customElements.define('svga-player', SVGAPlayerElement);
+&lt;/script&gt;</code></pre>
+
+      <h3>Step 3: Use the Element!</h3>
+      <p>You can now use the <code>&lt;svga-player&gt;</code> tag anywhere in your HTML with simple attributes.</p>
+<pre><code class="language-html">&lt;svga-player 
+  src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/angel.svga" 
+  width="250" 
+  height="250" 
+  loops="0" 
+  autoplay&gt;
+&lt;/svga-player&gt;</code></pre>
+      <div class="demo-container">
+          <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/angel.svga" width="250" height="250" loops="0" autoplay></svga-player>
+      </div>
+    </div>
+
+    <!-- API REFERENCE -->
+    <div class="section">
+      <h2>API Reference</h2>
+      <h3>Attributes</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>src</td>
+            <td>The URL of the SVGA file to load.</td>
+            <td>String</td>
+            <td>None (required)</td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>The width of the canvas in pixels.</td>
+            <td>Number</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>The height of the canvas in pixels.</td>
+            <td>Number</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>loops</td>
+            <td>Number of times to loop the animation (0 for infinite).</td>
+            <td>Number</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>autoplay</td>
+            <td>If present, starts the animation automatically.</td>
+            <td>Boolean</td>
+            <td>False</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Methods</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>play()</td>
+            <td>Starts or resumes the animation.</td>
+          </tr>
+          <tr>
+            <td>pause()</td>
+            <td>Pauses the animation.</td>
+          </tr>
+          <tr>
+            <td>stop()</td>
+            <td>Stops the animation and resets to the beginning.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- API & EXAMPLES -->
+    <div class="section">
+      <h2>Examples</h2>
+      <h3>Example: JavaScript Control</h3>
+      <p>Don't want to autoplay? Control the animation with JavaScript. Here, we've linked the player to buttons for manual control.</p>
+<pre><code class="language-html">&lt;!-- The Player --&gt;
+&lt;svga-player 
+  id="interactive-player"
+  src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/PinJump.svga" 
+  width="250" 
+  height="250"&gt;
+&lt;/svga-player&gt;
+
+&lt;!-- The Controls --&gt;
+&lt;button onclick="document.getElementById('interactive-player').play()"&gt;Play&lt;/button&gt;
+&lt;button onclick="document.getElementById('interactive-player').pause()"&gt;Pause&lt;/button&gt;
+&lt;button onclick="document.getElementById('interactive-player').stop()"&gt;Stop&lt;/button&gt;</code></pre>
+<pre><code class="language-javascript">// You can also control it from your main script file
+const player = document.getElementById('interactive-player');
+player.play();
+player.pause();
+player.stop();
+</code></pre>
+      <div class="demo-container">
+        <svga-player id="interactive-player" src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/PinJump.svga" width="250" height="250"></svga-player>
+        <div class="controls">
+          <button class="control-btn" onclick="document.getElementById('interactive-player').play()">Play</button>
+          <button class="control-btn" onclick="document.getElementById('interactive-player').pause()">Pause</button>
+          <button class="control-btn" onclick="document.getElementById('interactive-player').stop()">Stop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+<div class="section">
+  <h2>Gallery</h2>
+  <p>
+    The element is lightweight, so you can easily display a whole gallery of animations.  
+    Here are multiple examples using SVGA sample files:
+  </p>
+
+  <div class="demo-container">
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/HamburgerArrow.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/Walkthrough.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/TwitterHeart.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/kingset.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/PinJump.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/EmptyState.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="example/draw_egg.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="example/d_like.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="https://raw.githubusercontent.com/svga/SVGA-Samples/master/angel.svga" width="150" height="150" loops="0" autoplay></svga-player>
+    <svga-player src="example/draw_flower.svga" width="150" height="150" loops="0" autoplay></svga-player>
+  </div>
+</div>
+
+
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!--                      REQUIRED JAVASCRIPT LIBRARIES                    -->
+  <!-- ===================================================================== -->
+
+  <!-- The full JavaScript for the component is already in the guide above, -->
+  <!-- but we also include it here to make this page fully functional. -->
+
+  <!-- STEP 1: Official SVGA Web Player Library -->
+  <script src="https://unpkg.com/svgaplayerweb@2.3.0/build/svga.min.js"></script>
+  
+  <!-- STEP 2: The <svga-player> Custom Element Code -->
+  <script>
+    class SVGAPlayerElement extends HTMLElement { constructor() { super(); this.player = null; this.parser = null; this.canvas = null; } connectedCallback() { this.createCanvas(); this.initializeSVGA(); this.observeAttributes(); } createCanvas() { this.canvas = document.createElement('canvas'); this.canvas.width = this.getAttribute('width') || 200; this.canvas.height = this.getAttribute('height') || 200; this.canvas.style.display = 'block'; this.canvas.style.background = 'transparent'; this.appendChild(this.canvas); } initializeSVGA() { if (!window.SVGA) { console.error('SVGA library is not loaded. Make sure the script is included.'); return; } try { this.player = new SVGA.Player(this.canvas); this.parser = new SVGA.Parser(this.canvas); const src = this.getAttribute('src'); if (src) { this.loadSVGA(src); } } catch (error) { console.error('Error initializing SVGA Player:', error); } } observeAttributes() { const observer = new MutationObserver((mutations) => { mutations.forEach((mutation) => { if (mutation.type === 'attributes') { this.handleAttributeChange(mutation.attributeName); } }); }); observer.observe(this, { attributes: true }); } loadSVGA(url) { if (!this.parser || !this.player) return; this.player.clear(); this.parser.load(url, (videoItem) => { this.player.setVideoItem(videoItem); const loops = this.getAttribute('loops'); this.player.loops = loops !== null ? (parseInt(loops, 10) || 0) : 1; if (this.hasAttribute('autoplay')) { this.player.startAnimation(); } }, (error) => { console.error(`Error loading SVGA file: ${url}`, error); }); } handleAttributeChange(attributeName) { const value = this.getAttribute(attributeName); switch (attributeName) { case 'src': if (value) this.loadSVGA(value); break; case 'width': this.canvas.width = value || 200; break; case 'height': this.canvas.height = value || 200; break; case 'loops': if (this.player) this.player.loops = value !== null ? (parseInt(value, 10) || 0) : 1; break; } } play() { if (this.player) this.player.startAnimation(); } pause() { if (this.player) this.player.pauseAnimation(); } stop() { if (this.player) this.player.stopAnimation(); } static get observedAttributes() { return ['src', 'width', 'height', 'loops', 'autoplay']; } }
+    customElements.define('svga-player', SVGAPlayerElement);
+  </script>
+
+  <!-- Prism.js for Syntax Highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- "Copy Code" Button Functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('pre').forEach(block => {
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-btn';
+        copyButton.innerText = 'Copy';
+        block.appendChild(copyButton);
+
+        copyButton.addEventListener('click', () => {
+          const code = block.querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(() => {
+            copyButton.innerText = 'Copied!';
+            copyButton.style.backgroundColor = 'var(--success-color)';
+            copyButton.style.color = 'black';
+            setTimeout(() => {
+              copyButton.innerText = 'Copy';
+              copyButton.style.backgroundColor = '';
+              copyButton.style.color = '';
+            }, 2000);
+          }).catch(err => console.error('Failed to copy: ', err));
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
