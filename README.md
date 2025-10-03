@@ -7,7 +7,7 @@ A self-contained, interactive guide and implementation of a `<svga-player>` cust
 
 The entire project is a single HTML file that serves as both the documentation and the working code.
 
-**[➡️ View the Live Demo Here](https://h1dawood.github.io/svga-player-element/)**
+**[➡️ View the Live Demo Here](https://h1dawood.com/svga-player-element/)**
 > **Note:** To make the live demo link work, you need to enable GitHub Pages in your repository's settings. Go to `Settings` > `Pages` and select the `main` branch as the source.
 
 ## ✨ Key Features
