@@ -1,7 +1,7 @@
 # &lt;svga-player&gt; Custom Element Guide
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Project Views](https://h1dawood.com/github/view_counter.php?svga-player-element&label=views&color=blue&labelColor=555&logo=eye)
+![Project Views](https://h1dawood.com/github/view_counter.php?svga&label=views&color=blue&labelColor=555&logo=eye)
 
 A self-contained, interactive guide and implementation of a `<svga-player>` custom HTML element. This project makes adding high-performance [SVGA animations](http://svga.io/) to your website as simple as using an `<img>` tag.
 
